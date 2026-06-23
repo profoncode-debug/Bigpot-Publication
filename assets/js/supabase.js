@@ -14,9 +14,8 @@
    ========================================================================= */
 
 window.SUPABASE_CONFIG = {
-  url:     "https://oiqnpgcvlmwfmbnwkuxc.supabase.co",        // e.g. https://abcdxyz.supabase.co
-  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9pcW5wZ2N2bG13Zm1ibndrdXhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIxNDk1NTEsImV4cCI6MjA5NzcyNTU1MX0.lAYKeC28hn02rmsPdKolTO0U6CCNS6ZQ5-1omE2_Y4Y"    // the long "anon public" JWT
-};
+  url:     "https://lxyorgsjyprzwmwsjdwu.supabase.co",        // e.g. https://abcdxyz.supabase.co
+  anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4eW9yZ3NqeXByendtd3NqZHd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIyMDM3NzUsImV4cCI6MjA5Nzc3OTc3NX0.Pr6Q4ABNK05Ex-pJYQw-9rBla9teW1m-nnxdJO3OHPo"
 
 (function () {
   const cfg = window.SUPABASE_CONFIG;
