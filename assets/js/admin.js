@@ -25,8 +25,11 @@
 
   /* ----------------------------------------------------- auth gate */
   async function boot() {
-    const { data } = await sb.auth.getUser();
-    const user = data ? data.user : null;
+    let user = null;
+    try {
+      const { data } = await sb.auth.getSession();   // instant, no network dependency
+      user = data && data.session ? data.session.user : null;
+    } catch (_) {}
     if (!user) { showGate(); return; }
 
     // verify admin role

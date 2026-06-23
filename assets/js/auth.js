@@ -88,16 +88,23 @@
 
   /* --------------------------------------------------- session */
   async function refreshUser() {
-    const { data } = await sb.auth.getUser();
-    currentUser = data ? data.user : null;
+    // getSession() reads from local storage instantly (no network), so the
+    // header never waits on a slow/failed request to draw the button.
+    try {
+      const { data } = await sb.auth.getSession();
+      currentUser = data && data.session ? data.session.user : null;
+    } catch (_) {
+      currentUser = null;
+    }
     isAdmin = false;
+    renderArea();                       // draw Log in / account right away
     if (currentUser) {
       try {
         const { data: prof } = await sb.from("profiles").select("role").eq("id", currentUser.id).single();
         isAdmin = prof && prof.role === "admin";
+        if (isAdmin) renderArea();      // re-draw to add the Admin link
       } catch (_) { /* profile may not be readable yet */ }
     }
-    renderArea();
   }
 
   sb.auth.onAuthStateChange(() => { refreshUser(); });
@@ -199,5 +206,6 @@
   function escapeHtml(s) { return String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])); }
 
   /* --------------------------------------------------- go */
-  refreshUser();
+  renderArea();      // instant "Log in" button — never blank while auth loads
+  refreshUser();     // then reflect the real session (account menu / admin)
 })();
