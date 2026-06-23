@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · Bigpot Publication</title>
+  <meta name="robots" content="noindex" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23000'/%3E%3Cpath d='M8 8h12a4 4 0 0 1 4 4v8H8z' fill='%23fff'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    body { background: var(--paper); }
+    .admin-top {
+      position: sticky; top: 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px clamp(18px, 4vw, 48px);
+      background: var(--ink); color: var(--paper);
+    }
+    .admin-top__brand { font-family: var(--font-display); font-weight: 700; letter-spacing: .1em; }
+    .admin-top__brand span { font-family: var(--font-mono); font-weight: 400; font-size: .6rem; letter-spacing: .3em; display: block; color: var(--mute-2); }
+    .admin-top__right { display: flex; align-items: center; gap: 14px; }
+    .admin-top__user { font-family: var(--font-mono); font-size: .72rem; color: var(--mute-2); }
+    .admin-wrap { max-width: 1100px; margin: 0 auto; padding: clamp(20px, 4vw, 44px); }
+
+    .gate { max-width: 400px; margin: 8vh auto; }
+    .gate h1 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 6px; }
+    .gate p { color: var(--mute); margin-bottom: 22px; }
+
+    .tabs { display: flex; gap: 6px; margin-bottom: 26px; flex-wrap: wrap; }
+    .tab {
+      font-family: var(--font-mono); font-size: .74rem; letter-spacing: .12em; text-transform: uppercase;
+      padding: 11px 20px; border: 1.5px solid var(--line-2); border-radius: 2px; color: var(--mute);
+      transition: all .25s var(--ease);
+    }
+    .tab:hover { border-color: var(--ink); color: var(--ink); }
+    .tab.is-active { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+    .panel { display: none; }
+    .panel.is-active { display: block; }
+
+    .panel__head { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+    .panel__head h2 { font-family: var(--font-display); font-size: 1.5rem; }
+
+    .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--paper-2); }
+    table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+    th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+    th { font-family: var(--font-mono); font-size: .64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mute); background: var(--paper); }
+    tr:last-child td { border-bottom: none; }
+    td .thumb { height: 46px; width: auto; border-radius: 2px; border: 1px solid var(--line); }
+    .row-actions { display: flex; gap: 8px; }
+    .mini { font-family: var(--font-mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; padding: 7px 12px; border: 1.5px solid var(--line-2); border-radius: 2px; transition: all .2s var(--ease); }
+    .mini:hover { border-color: var(--ink); }
+    .mini--danger { color: #9a2b2b; border-color: #e3c2c2; }
+    .mini--danger:hover { background: #9a2b2b; color: #fff; border-color: #9a2b2b; }
+
+    select.statussel { font-family: var(--font-mono); font-size: .72rem; padding: 7px 8px; border: 1.5px solid var(--line-2); border-radius: 3px; background: var(--paper); }
+
+    .editor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .editor-grid .field.col-2 { grid-column: 1 / -1; }
+    .imgstrip { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+    .imgstrip figure { position: relative; }
+    .imgstrip img { height: 70px; width: auto; border-radius: 3px; border: 1px solid var(--line); display: block; }
+    .imgstrip button { position: absolute; top: -7px; right: -7px; width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; font-size: 1rem; line-height: 1; display: grid; place-items: center; }
+    .switch { display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; }
+    .notice { font-family: var(--font-mono); font-size: .76rem; padding: 12px 14px; border-radius: 4px; margin-bottom: 16px; }
+    .notice--err { background: #f6e6e6; color: #9a2b2b; }
+    .notice--ok { background: #e6f1ea; color: #1e6b3a; }
+    .hide { display: none !important; }
+    @media (max-width: 620px) { .editor-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="admin-top">
+    <div class="admin-top__brand">BIGPOT <span>Admin</span></div>
+    <div class="admin-top__right">
+      <span class="admin-top__user" id="adminUser"></span>
+      <a class="authbtn" href="index.html" style="background:transparent;color:var(--paper);border-color:#444">View site</a>
+      <button class="authbtn" id="logoutBtn" style="background:transparent;color:var(--paper);border-color:#444">Log out</button>
+    </div>
+  </header>
+
+  <!-- ============ LOGIN / ACCESS GATE ============ -->
+  <section class="gate" id="gate">
+    <h1>Admin sign in</h1>
+    <p id="gateMsg">Sign in with your admin account to manage books and orders.</p>
+    <form id="gateForm">
+      <div class="field">
+        <label for="gEmail">Email</label>
+        <input id="gEmail" type="email" placeholder="you@email.com" required />
+      </div>
+      <div class="field">
+        <label for="gPassword">Password</label>
+        <input id="gPassword" type="password" placeholder="••••••••" required />
+      </div>
+      <button class="btn btn--solid btn--full" type="submit">Sign in</button>
+    </form>
+  </section>
+
+  <!-- ============ DASHBOARD ============ -->
+  <main class="admin-wrap hide" id="dash">
+    <div class="tabs">
+      <button class="tab is-active" data-tab="books">Books</button>
+      <button class="tab" data-tab="orders">Orders</button>
+    </div>
+
+    <div id="adminNotice"></div>
+
+    <!-- BOOKS -->
+    <section class="panel is-active" id="panel-books">
+      <div class="panel__head">
+        <h2>Catalogue</h2>
+        <button class="btn btn--solid btn--sm" id="addBookBtn">+ Add book</button>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Cover</th><th>Title</th><th>Category</th><th>Edition</th><th>Stock</th><th>Order</th><th></th></tr></thead>
+          <tbody id="booksBody"><tr><td colspan="7" style="color:var(--mute)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="panel" id="panel-orders">
+      <div class="panel__head">
+        <h2>Orders &amp; enquiries</h2>
+        <select class="statussel" id="orderFilter">
+          <option value="all">All statuses</option>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+          <option value="fulfilled">Fulfilled</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Date</th><th>Name</th><th>Contact</th><th>Books</th><th>Message</th><th>Status</th></tr></thead>
+          <tbody id="ordersBody"><tr><td colspan="6" style="color:var(--mute)">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ BOOK EDITOR MODAL ============ -->
+  <div class="modal" id="bookModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__panel" style="width:min(680px,100%)">
+      <button class="modal__close" data-close aria-label="Close">&times;</button>
+      <h3 class="modal__title" id="bookModalTitle">Add book</h3>
+      <form id="bookForm">
+        <div class="editor-grid">
+          <div class="field"><label for="bTitle">Title</label><input id="bTitle" type="text" required /></div>
+          <div class="field"><label for="bSlug">Slug (unique id)</label><input id="bSlug" type="text" placeholder="e.g. bns-2023" required /></div>
+          <div class="field"><label for="bSubtitle">Subtitle</label><input id="bSubtitle" type="text" /></div>
+          <div class="field"><label for="bTagline">Tagline</label><input id="bTagline" type="text" /></div>
+          <div class="field">
+            <label for="bCategory">Category</label>
+            <select id="bCategory" class="statussel" style="width:100%;padding:13px 14px">
+              <option value="rpf">RPF Preparation</option>
+              <option value="engineering">Railway Engineering</option>
+            </select>
+          </div>
+          <div class="field"><label for="bEdition">Edition</label><input id="bEdition" type="text" placeholder="e.g. Edition 2026" /></div>
+          <div class="field"><label for="bPrice">Price (₹, optional)</label><input id="bPrice" type="number" step="1" min="0" /></div>
+          <div class="field"><label for="bSort">Sort order</label><input id="bSort" type="number" step="1" value="100" /></div>
+          <div class="field col-2"><label for="bDesc">Description</label><textarea id="bDesc" rows="3"></textarea></div>
+          <div class="field col-2">
+            <label class="switch"><input type="checkbox" id="bStock" checked /> In stock</label>
+          </div>
+          <div class="field col-2">
+            <label for="bImages">Page images (first = cover)</label>
+            <input id="bImages" type="file" accept="image/*" multiple />
+            <div class="imgstrip" id="bImgStrip"></div>
+          </div>
+        </div>
+        <div id="bookFormMsg" class="auth-msg" hidden style="margin-bottom:12px"></div>
+        <button class="btn btn--solid btn--full" type="submit" id="bookSaveBtn">Save book</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="assets/js/supabase.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

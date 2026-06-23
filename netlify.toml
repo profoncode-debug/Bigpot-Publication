@@ -1,0 +1,14 @@
+# Netlify configuration for the Bigpot Publication static site
+[build]
+  publish = "."          # the site is plain HTML/CSS/JS at the repo root — no build step
+
+# Long-cache the static assets; HTML stays fresh
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
