@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Bigpot Admin</title>
+  <meta name="theme-color" content="#0b1a36" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23f6b324'/%3E%3Cpath d='M8 9h12a4 4 0 0 1 4 4v7H8z' fill='%230b1a36'/%3E%3Ccircle cx='12' cy='23' r='2.4' fill='%230b1a36'/%3E%3Ccircle cx='20' cy='23' r='2.4' fill='%230b1a36'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/admin.css" />
+</head>
+<body class="admin">
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-plus" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m6 15 6-6 6 6"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+    <symbol id="i-camera" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M11 4a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm9 16-4-4"/></symbol>
+    <symbol id="i-ext" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M20 11a8 8 0 0 0-14.6-4.5L4 8m0-4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16m0 4v-4h-4"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M4 20V10l8-6 8 6v10h-5v-6H9v6z"/></symbol>
+    <symbol id="i-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3zM5 17a3 3 0 0 1 3-3h11"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" d="M3 4h2l2.4 11h10.2L20 8H6.4"/><circle cx="9" cy="19.5" r="1.5" fill="currentColor"/><circle cx="17" cy="19.5" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="m12 3 8 4.5v9L12 21l-8-4.5v-9zM4 7.5l8 4.5 8-4.5M12 12v9"/></symbol>
+    <symbol id="i-wallet" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M4 7h15a1 1 0 0 1 1 1v11H5a1 1 0 0 1-1-1V6a2 2 0 0 1 2-2h11v3"/><circle cx="16" cy="13.5" r="1.4" fill="currentColor"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M12 4 2.5 20h19z"/><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 10v4.5M12 17.5v.01"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" d="M12 7.5V12l3 2"/></symbol>
+    <symbol id="i-paste" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" d="M8 5H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2M9 3h6v4H9z"/></symbol>
+  </svg>
+
+  <header class="abar">
+    <div class="container abar__inner">
+      <a href="index.html" class="brand brand--light" aria-label="Open the website">
+        <span class="brand__mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" width="36" height="36"><rect width="40" height="40" rx="10" fill="#f6b324"/><path d="M9 11h15a5 5 0 0 1 5 5v9H9z" fill="#0b1a36"/><rect x="12" y="14" width="5.5" height="4.5" rx="1" fill="#f6b324"/><rect x="20" y="14" width="5.5" height="4.5" rx="1" fill="#f6b324"/><circle cx="14" cy="28.5" r="3" fill="#0b1a36"/><circle cx="24.5" cy="28.5" r="3" fill="#0b1a36"/></svg>
+        </span>
+        <span class="brand__text"><strong>Bigpot</strong><em>Admin</em></span>
+      </a>
+
+      <nav class="atabs" id="tabs" aria-label="Sections" hidden>
+        <button type="button" data-tab="overview" class="is-active"><svg width="20" height="20"><use href="#i-home"/></svg><span>Overview</span></button>
+        <button type="button" data-tab="sales"><svg width="20" height="20"><use href="#i-cart"/></svg><span>Sales</span></button>
+        <button type="button" data-tab="books"><svg width="20" height="20"><use href="#i-book"/></svg><span>Books</span></button>
+        <button type="button" data-tab="stock"><svg width="20" height="20"><use href="#i-box"/></svg><span>Stock</span></button>
+        <button type="button" data-tab="expenses"><svg width="20" height="20"><use href="#i-wallet"/></svg><span>Expenses</span></button>
+      </nav>
+
+      <div class="abar__actions">
+        <button class="abtn-link" id="reloadBtn" type="button" hidden title="Reload from the Sheet"><svg width="16" height="16"><use href="#i-refresh"/></svg><span>Sync</span></button>
+        <a class="abtn-link" href="index.html" target="_blank" rel="noopener"><svg width="16" height="16"><use href="#i-ext"/></svg><span>Site</span></a>
+        <button class="abtn-link" id="logoutBtn" type="button" hidden>Sign out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container amain">
+
+    <!-- not configured yet -->
+    <section class="acard acard--narrow" id="viewSetup" hidden>
+      <h1 class="atitle">Admin isn't connected yet</h1>
+      <p>Follow the setup steps at the top of <code>apps-script/Code.gs</code>, then paste your
+         Apps Script <b>Web app URL</b> into <code>assets/js/config.js</code> as <code>adminApiUrl</code>.</p>
+    </section>
+
+    <!-- sign in -->
+    <section class="acard acard--narrow" id="viewLogin" hidden>
+      <h1 class="atitle">Sign in</h1>
+      <p class="amuted">Books, sales, stock and money — all in one place.</p>
+      <form id="loginForm" class="aform" novalidate>
+        <div class="field">
+          <label for="pw">Admin password</label>
+          <input id="pw" type="password" autocomplete="current-password" required />
+        </div>
+        <button class="btn btn--primary btn--full btn--lg" type="submit" id="loginBtn">Sign in</button>
+        <p class="form-note form-note--error" id="loginNote" hidden></p>
+      </form>
+    </section>
+
+    <div id="viewApp" hidden>
+
+      <!-- ============ OVERVIEW ============ -->
+      <section class="panel" data-panel="overview">
+        <div class="ahead">
+          <div>
+            <h1 class="atitle">Overview</h1>
+            <p class="amuted" id="ovSub">Money in, money out, and what's on the shelf.</p>
+          </div>
+          <div class="ahead__tools">
+            <label class="aselect"><span class="sr-only">Period</span>
+              <select id="period">
+                <option value="month">This month</option>
+                <option value="lastmonth">Last month</option>
+                <option value="3m">Last 3 months</option>
+                <option value="fy">This financial year</option>
+                <option value="year">This calendar year</option>
+                <option value="all">All time</option>
+              </select>
+            </label>
+            <button class="btn btn--primary" type="button" data-new="sale"><svg width="18" height="18"><use href="#i-plus"/></svg> Record sale</button>
+          </div>
+        </div>
+
+        <div class="alerts" id="alerts"></div>
+        <div class="kpis" id="kpis"></div>
+
+        <div class="acard chartcard">
+          <div class="chartcard__head">
+            <div>
+              <h2 class="asub">Last 12 months</h2>
+              <div class="legend"><span><i class="sw sw--rev"></i>Sales</span><span><i class="sw sw--net"></i>Net profit</span></div>
+            </div>
+            <button class="btn btn--ghost btn--sm" type="button" id="chartTableBtn" aria-pressed="false">Show table</button>
+          </div>
+          <div class="chart" id="chart"></div>
+          <div class="chart-table" id="chartTable" hidden></div>
+        </div>
+
+        <div class="agrid2">
+          <div class="acard">
+            <h2 class="asub">Best sellers <small id="topSub"></small></h2>
+            <div id="topBooks" class="mini"></div>
+          </div>
+          <div class="acard">
+            <h2 class="asub">Running low</h2>
+            <div id="lowStock" class="mini"></div>
+          </div>
+        </div>
+
+        <div class="acard">
+          <div class="chartcard__head">
+            <h2 class="asub">Recent orders</h2>
+            <button class="btn btn--ghost btn--sm" type="button" data-goto="sales">All sales</button>
+          </div>
+          <div id="recentOrders" class="olist"></div>
+        </div>
+      </section>
+
+      <!-- ============ SALES ============ -->
+      <section class="panel" data-panel="sales" hidden>
+        <div class="ahead">
+          <div>
+            <h1 class="atitle">Sales</h1>
+            <p class="amuted">Record every order you get on WhatsApp, in the shop or by phone.</p>
+          </div>
+          <div class="ahead__tools">
+            <label class="search search--sm">
+              <svg width="16" height="16"><use href="#i-search"/></svg>
+              <input type="search" id="salesSearch" placeholder="Name, phone, book, order no." aria-label="Search sales" />
+            </label>
+            <label class="aselect"><span class="sr-only">Show</span>
+              <select id="salesFilter">
+                <option value="all">All orders</option>
+                <option value="pending">Payment pending</option>
+                <option value="paid">Paid</option>
+              </select>
+            </label>
+            <button class="btn btn--primary" type="button" data-new="sale"><svg width="18" height="18"><use href="#i-plus"/></svg> Record sale</button>
+          </div>
+        </div>
+        <div class="strip" id="salesStrip"></div>
+        <div class="olist" id="salesList"></div>
+      </section>
+
+      <!-- ============ BOOKS ============ -->
+      <section class="panel" data-panel="books" hidden>
+        <div class="ahead">
+          <div>
+            <h1 class="atitle">Books <span class="acount" id="bookCount"></span></h1>
+            <p class="amuted">What the website shows. Changes appear on the site within about 5 minutes.</p>
+          </div>
+          <div class="ahead__tools">
+            <label class="search search--sm">
+              <svg width="16" height="16"><use href="#i-search"/></svg>
+              <input type="search" id="adminSearch" placeholder="Search" aria-label="Search books" />
+            </label>
+            <button class="btn btn--primary" id="addBtn" type="button"><svg width="18" height="18"><use href="#i-plus"/></svg> Add book</button>
+          </div>
+        </div>
+        <div class="alist" id="bookList" aria-live="polite"></div>
+      </section>
+
+      <!-- ============ STOCK ============ -->
+      <section class="panel" data-panel="stock" hidden>
+        <div class="ahead">
+          <div>
+            <h1 class="atitle">Stock</h1>
+            <p class="amuted">Copies on hand and what they cost you. Sales take copies out automatically.</p>
+          </div>
+          <div class="ahead__tools">
+            <button class="btn btn--primary" type="button" data-new="restock"><svg width="18" height="18"><use href="#i-plus"/></svg> Add new copies</button>
+          </div>
+        </div>
+        <div class="strip" id="stockStrip"></div>
+        <div class="acard acard--flush">
+          <div class="ttable" id="stockTable"></div>
+        </div>
+        <h2 class="asub asub--gap">Print runs &amp; purchases</h2>
+        <div class="olist" id="restockList"></div>
+      </section>
+
+      <!-- ============ EXPENSES ============ -->
+      <section class="panel" data-panel="expenses" hidden>
+        <div class="ahead">
+          <div>
+            <h1 class="atitle">Expenses</h1>
+            <p class="amuted">Shipping, packaging, ads, rent — anything that isn't buying books.</p>
+          </div>
+          <div class="ahead__tools">
+            <label class="aselect"><span class="sr-only">Period</span>
+              <select id="expPeriod">
+                <option value="month">This month</option>
+                <option value="lastmonth">Last month</option>
+                <option value="3m">Last 3 months</option>
+                <option value="fy">This financial year</option>
+                <option value="year">This calendar year</option>
+                <option value="all">All time</option>
+              </select>
+            </label>
+            <button class="btn btn--primary" type="button" data-new="expense"><svg width="18" height="18"><use href="#i-plus"/></svg> Add expense</button>
+          </div>
+        </div>
+        <div class="strip" id="expStrip"></div>
+        <div class="olist" id="expList"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===================== BOOK EDITOR ===================== -->
+  <div class="drawer editor" id="editor" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="edTitle">
+    <div class="drawer__backdrop" data-close></div>
+    <form class="drawer__panel editor__panel" id="edForm" tabindex="-1" novalidate>
+      <div class="drawer__head">
+        <h3 id="edTitle">Edit book</h3>
+        <button class="icon-btn" type="button" data-close aria-label="Close"><svg width="22" height="22"><use href="#i-x"/></svg></button>
+      </div>
+
+      <div class="editor__body">
+        <div class="field">
+          <label for="fTitle">Title *</label>
+          <input id="fTitle" type="text" required placeholder="e.g. Bharatiya Nyaya Sanhita 2023" />
+        </div>
+        <div class="field">
+          <label for="fSubtitle">Subtitle <span class="field__opt">(Hindi or English)</span></label>
+          <input id="fSubtitle" type="text" placeholder="e.g. भारतीय न्याय संहिता" />
+        </div>
+        <div class="egrid">
+          <div class="field">
+            <label for="fCategory">Category</label>
+            <input id="fCategory" type="text" list="catList" placeholder="rpf / engineering" autocapitalize="off" />
+            <datalist id="catList"></datalist>
+          </div>
+          <div class="field">
+            <label for="fEdition">Edition</label>
+            <input id="fEdition" type="text" placeholder="e.g. Edition 2026" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="fTagline">Tagline</label>
+          <input id="fTagline" type="text" placeholder="e.g. 5-in-1 Combined Acts" />
+        </div>
+        <div class="field">
+          <label for="fDesc">Description</label>
+          <textarea id="fDesc" rows="3" placeholder="What's inside, who it's for"></textarea>
+        </div>
+
+        <fieldset class="money">
+          <legend>Price, cost &amp; stock <span class="field__opt">— cost and stock are private</span></legend>
+          <div class="egrid egrid--3">
+            <div class="field">
+              <label for="fPrice">Selling price ₹</label>
+              <input id="fPrice" type="text" inputmode="decimal" placeholder="999" />
+            </div>
+            <div class="field">
+              <label for="fCost">Cost per copy ₹</label>
+              <input id="fCost" type="text" inputmode="decimal" placeholder="printing + binding" />
+            </div>
+            <div class="field">
+              <label for="fQty">Copies in stock</label>
+              <input id="fQty" type="text" inputmode="numeric" placeholder="leave empty to not track" />
+            </div>
+          </div>
+          <div class="egrid">
+            <div class="field">
+              <label for="fLow">Warn me when stock is at</label>
+              <input id="fLow" type="text" inputmode="numeric" placeholder="10" />
+            </div>
+            <div class="margin" id="fMargin" aria-live="polite"></div>
+          </div>
+        </fieldset>
+
+        <label class="switch-row">
+          <span><b>Show as in stock on the website</b><small>Turns off by itself when copies run out</small></span>
+          <span class="switch"><input type="checkbox" id="fStock" checked /><i></i></span>
+        </label>
+
+        <div class="field">
+          <label>Photos <span class="field__opt">(the first one is the cover)</span></label>
+          <div class="pics" id="pics"></div>
+          <div class="pics__link">
+            <input type="url" id="picUrl" placeholder="…or paste an image / Google Drive link" />
+            <button class="btn btn--ghost btn--sm" type="button" id="picUrlAdd">Add</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="editor__foot">
+        <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn--primary" type="submit" id="edSave">Save book</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ===================== SALE ===================== -->
+  <div class="drawer editor" id="saleEd" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="saleTitle">
+    <div class="drawer__backdrop" data-close></div>
+    <form class="drawer__panel editor__panel" id="saleForm" tabindex="-1" novalidate>
+      <div class="drawer__head">
+        <h3 id="saleTitle">Record a sale</h3>
+        <button class="icon-btn" type="button" data-close aria-label="Close"><svg width="22" height="22"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="editor__body">
+        <details class="paste">
+          <summary><svg width="18" height="18"><use href="#i-paste"/></svg> Paste a WhatsApp order to fill this in</summary>
+          <textarea id="pasteBox" rows="5" placeholder="Paste the whole order message from the website here"></textarea>
+          <button class="btn btn--ghost btn--sm" type="button" id="pasteGo">Fill the form</button>
+        </details>
+
+        <div class="egrid">
+          <div class="field">
+            <label for="sCustomer">Customer</label>
+            <input id="sCustomer" type="text" autocomplete="off" placeholder="Name" />
+          </div>
+          <div class="field">
+            <label for="sPhone">Phone</label>
+            <input id="sPhone" type="tel" autocomplete="off" placeholder="optional" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Books sold</label>
+          <div class="lines" id="sLines"></div>
+          <button class="btn btn--ghost btn--sm lines__add" type="button" id="sAddLine"><svg width="16" height="16"><use href="#i-plus"/></svg> Another book</button>
+        </div>
+
+        <div class="egrid egrid--3">
+          <div class="field">
+            <label for="sDate">Date</label>
+            <input id="sDate" type="date" />
+          </div>
+          <div class="field">
+            <label for="sMode">Paid by</label>
+            <select id="sMode"><option>UPI</option><option>Cash</option><option>Bank transfer</option><option>COD</option><option>Other</option></select>
+          </div>
+          <div class="field">
+            <label for="sStatus">Payment</label>
+            <select id="sStatus"><option value="paid">Received</option><option value="pending">Pending</option></select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="sNotes">Notes <span class="field__opt">(address, courier no.…)</span></label>
+          <textarea id="sNotes" rows="2"></textarea>
+        </div>
+      </div>
+      <div class="editor__foot editor__foot--sum">
+        <div class="sum" id="sSum"></div>
+        <div class="editor__btns">
+          <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+          <button class="btn btn--primary" type="submit" id="sSave">Save sale</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- ===================== RESTOCK ===================== -->
+  <div class="drawer editor" id="restockEd" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="rTitle">
+    <div class="drawer__backdrop" data-close></div>
+    <form class="drawer__panel editor__panel" id="restockForm" tabindex="-1" novalidate>
+      <div class="drawer__head">
+        <h3 id="rTitle">Add new copies</h3>
+        <button class="icon-btn" type="button" data-close aria-label="Close"><svg width="22" height="22"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="editor__body">
+        <p class="amuted">A new print run, or copies bought from a supplier. They're added to stock straight away.</p>
+        <div class="field">
+          <label for="rBook">Book</label>
+          <select id="rBook"></select>
+        </div>
+        <div class="egrid">
+          <div class="field">
+            <label for="rQty">Copies</label>
+            <input id="rQty" type="text" inputmode="numeric" placeholder="e.g. 500" />
+          </div>
+          <div class="field">
+            <label for="rCost">Cost per copy ₹</label>
+            <input id="rCost" type="text" inputmode="decimal" placeholder="what you paid" />
+          </div>
+        </div>
+        <div class="egrid">
+          <div class="field">
+            <label for="rSupplier">Printer / supplier</label>
+            <input id="rSupplier" type="text" placeholder="optional" />
+          </div>
+          <div class="field">
+            <label for="rDate">Date</label>
+            <input id="rDate" type="date" />
+          </div>
+        </div>
+        <div class="field">
+          <label for="rNotes">Notes</label>
+          <input id="rNotes" type="text" placeholder="optional" />
+        </div>
+        <div class="hint" id="rHint"></div>
+      </div>
+      <div class="editor__foot">
+        <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn--primary" type="submit" id="rSave">Add to stock</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ===================== EXPENSE ===================== -->
+  <div class="drawer editor" id="expEd" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="xTitle">
+    <div class="drawer__backdrop" data-close></div>
+    <form class="drawer__panel editor__panel" id="expForm" tabindex="-1" novalidate>
+      <div class="drawer__head">
+        <h3 id="xTitle">Add an expense</h3>
+        <button class="icon-btn" type="button" data-close aria-label="Close"><svg width="22" height="22"><use href="#i-x"/></svg></button>
+      </div>
+      <div class="editor__body">
+        <div class="egrid">
+          <div class="field">
+            <label for="xAmount">Amount ₹</label>
+            <input id="xAmount" type="text" inputmode="decimal" placeholder="0" />
+          </div>
+          <div class="field">
+            <label for="xDate">Date</label>
+            <input id="xDate" type="date" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Category</label>
+          <div class="chips" id="xCats"></div>
+          <input id="xCategory" type="text" list="xCatList" placeholder="or type your own" />
+          <datalist id="xCatList"></datalist>
+        </div>
+        <div class="field">
+          <label for="xDesc">What for</label>
+          <input id="xDesc" type="text" placeholder="e.g. India Post — 12 parcels" />
+        </div>
+        <div class="field">
+          <label for="xVia">Paid by</label>
+          <select id="xVia"><option>UPI</option><option>Cash</option><option>Bank transfer</option><option>Card</option><option>Other</option></select>
+        </div>
+      </div>
+      <div class="editor__foot">
+        <button class="btn btn--ghost" type="button" data-close>Cancel</button>
+        <button class="btn btn--primary" type="submit" id="xSave">Save expense</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="tip" id="tip" role="tooltip" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>

@@ -214,7 +214,7 @@ svg { flex: none; }
 .hero__grid {
   position: relative; z-index: 3;
   display: grid;
-  grid-template-columns: 1.15fr .85fr;
+  grid-template-columns: 1.05fr .95fr;
   align-items: center;
   gap: clamp(24px, 4vw, 56px);
   flex: 1 1 auto;
@@ -253,14 +253,14 @@ svg { flex: none; }
 /* cover carousel: centre book + one either side; slides one step at a time */
 .hero__books {
   position: relative;
-  height: min(42vw, 56vh, 480px);
+  height: min(48vw, 62vh, 560px);
   animation: float 6s ease-in-out infinite;
 }
 .hero__book {
   --x: 110%; --r: 10deg; --s: .7;
   position: absolute;
   top: 50%; left: 50%;
-  width: min(20vw, 32vh, 270px);
+  width: min(24vw, 37vh, 300px);
   aspect-ratio: 5 / 7;
   padding: 0;
   border-radius: 6px 10px 10px 6px;
@@ -276,8 +276,8 @@ svg { flex: none; }
 .hero__book img { width: 100%; height: 100%; object-fit: cover; }
 .hero__book::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.22), transparent 8%, transparent 92%, rgba(255,255,255,.08)); }
 .hero__book.is-center { --x: 0%;    --r: 0deg;   --s: 1;   opacity: 1; z-index: 3; }
-.hero__book.is-left   { --x: -56%;  --r: -9deg;  --s: .82; opacity: 1; z-index: 2; filter: brightness(.82); }
-.hero__book.is-right  { --x: 56%;   --r: 9deg;   --s: .82; opacity: 1; z-index: 2; filter: brightness(.82); }
+.hero__book.is-left   { --x: -50%;  --r: -9deg;  --s: .82; opacity: 1; z-index: 2; filter: brightness(.82); }
+.hero__book.is-right  { --x: 50%;   --r: 9deg;   --s: .82; opacity: 1; z-index: 2; filter: brightness(.82); }
 .hero__book.is-out-left  { --x: -105%; --r: -14deg; --s: .65; opacity: 0; z-index: 1; }
 .hero__book.is-out-right { --x: 105%;  --r: 14deg;  --s: .65; opacity: 0; z-index: 1; }
 .hero__book.is-left:hover, .hero__book.is-right:hover { filter: none; }
@@ -755,8 +755,8 @@ svg { flex: none; }
     gap: clamp(8px, 2vh, 20px);
     padding-top: clamp(8px, 2vh, 24px);
   }
-  .hero__books { order: -1; height: min(27vh, 250px); }
-  .hero__book { width: min(30vw, 18vh, 168px); }
+  .hero__books { order: -1; height: min(31vh, 290px); }
+  .hero__book { width: min(36vw, 21vh, 196px); }
   .hero__book.is-left  { --x: -62%; }
   .hero__book.is-right { --x: 62%; }
   .about, .contact { grid-template-columns: 1fr; }

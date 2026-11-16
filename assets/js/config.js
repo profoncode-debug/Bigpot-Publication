@@ -14,9 +14,17 @@ window.SITE_CONFIG = {
   upiId:   "9474685023@okbizaxis",
   upiName: "Mahapatra Equipment",     // must match the name on the UPI account
 
-  // Google Sheet catalogue, published as CSV:
-  //   Sheet → File → Share → Publish to web → (your tab) → "Comma-separated values" → Publish
-  // Paste the link it gives you (ends in output=csv). Leave "" to use the
-  // built-in list in data.js.
+  // Admin dashboard (admin.html): the Apps Script "Web app URL" (ends in /exec).
+  // Setup steps are at the top of apps-script/Code.gs.
+  adminApiUrl: "",
+
+  // Where the website reads its books from — the Sheet's "Books" tab:
+  //   Sheet → File → Share → Publish to web → choose the "Books" tab
+  //   (NOT "Entire document" — that would make costs and sales public)
+  //   → "Comma-separated values (.csv)" → Publish. Paste the link here.
+  // If you leave this "" but set adminApiUrl, the site reads the Books tab
+  // through the admin script instead (no publishing needed, a little slower).
+  // With both empty, the built-in list in data.js is shown.
+  // ⚠ This link is still the OLD Sheet — replace it with the owner's one.
   sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXhpFyQv6VenJh30CDKzZk-r9MCYZdnl8eWjBTCLkbsg__t8UD7fSJXrgYSum_pymoouTMyBOvOQpR/pub?output=csv"
 };

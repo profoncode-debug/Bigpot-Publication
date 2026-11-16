@@ -49,18 +49,29 @@
   }
   const localBooks = () => ((typeof CATALOGUE !== "undefined") ? CATALOGUE : []).map(fromLocal);
 
+  // Books come from the published CSV of the Sheet's "Books" tab, or — if no
+  // CSV link is set — from the admin script's public ?action=books endpoint.
   async function fetchSheetBooks() {
-    if (!CFG.sheetCsvUrl) return [];
+    const useApi = !CFG.sheetCsvUrl && CFG.adminApiUrl;
+    if (!CFG.sheetCsvUrl && !useApi) return [];
     const ctrl = "AbortController" in window ? new AbortController() : null;
-    const timer = setTimeout(() => ctrl && ctrl.abort(), 8000);
+    const timer = setTimeout(() => ctrl && ctrl.abort(), useApi ? 12000 : 8000);
     try {
-      const res = await fetch(CFG.sheetCsvUrl, { signal: ctrl && ctrl.signal, cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      const rows = parseCSV(await res.text());
-      if (rows.length < 2) return [];
-      const head = rows[0].map((h) => h.trim().toLowerCase().replace(/\s+/g, "_"));
-      return rows.slice(1)
-        .map((cells) => Object.fromEntries(head.map((h, i) => [h, (cells[i] || "").trim()])))
+      let records;
+      if (useApi) {
+        const res = await fetch(CFG.adminApiUrl + "?action=books", { signal: ctrl && ctrl.signal });
+        const data = await res.json();
+        if (!data.ok) throw new Error(data.error || "API error");
+        records = data.books.map((b) => Object.fromEntries(Object.entries(b).map(([k, v]) => [k, String(v == null ? "" : v).trim()])));
+      } else {
+        const res = await fetch(CFG.sheetCsvUrl, { signal: ctrl && ctrl.signal, cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const rows = parseCSV(await res.text());
+        if (rows.length < 2) return [];
+        const head = rows[0].map((h) => h.trim().toLowerCase().replace(/\s+/g, "_"));
+        records = rows.slice(1).map((cells) => Object.fromEntries(head.map((h, i) => [h, (cells[i] || "").trim()])));
+      }
+      return records
         .filter((r) => r.title)
         .map(fromSheet)
         .filter((b) => b.images.length)
