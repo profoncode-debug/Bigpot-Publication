@@ -16,7 +16,7 @@ window.SITE_CONFIG = {
 
   // Admin dashboard (admin.html): the Apps Script "Web app URL" (ends in /exec).
   // Setup steps are at the top of apps-script/Code.gs.
-  adminApiUrl: "",
+  adminApiUrl: "https://script.google.com/macros/s/AKfycbygVjjoqT3SJS_gGrPkvC0j5LiO3rDF95Y7vLzkaWVnahEqmkt-oGGtPSs5yt3j4cOY/exec",
 
   // Where the website reads its books from — the Sheet's "Books" tab:
   //   Sheet → File → Share → Publish to web → choose the "Books" tab
