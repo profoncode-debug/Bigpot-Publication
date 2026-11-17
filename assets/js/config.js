@@ -25,6 +25,5 @@ window.SITE_CONFIG = {
   // If you leave this "" but set adminApiUrl, the site reads the Books tab
   // through the admin script instead (no publishing needed, a little slower).
   // With both empty, the built-in list in data.js is shown.
-  // ⚠ This link is still the OLD Sheet — replace it with the owner's one.
-  sheetCsvUrl: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTXhpFyQv6VenJh30CDKzZk-r9MCYZdnl8eWjBTCLkbsg__t8UD7fSJXrgYSum_pymoouTMyBOvOQpR/pub?output=csv"
+  sheetCsvUrl: ""
 };
