@@ -1,6 +1,6 @@
 # Bigpot Publication
 
-The website and shop dashboard for **Bigpot Publication**, an independent printing press in Kharagpur that publishes study material for RPF exams and Railway Engineering in Hindi and English.
+The website and shop dashboard for **Bigpot Publication**, an independent printing press in Kharagpur that publishes study material notes for RPF training and Railway Engineering in Hindi and English.
 
 - **Website:** https://profoncode-debug.github.io/Bigpot-Publication/
 - **Admin dashboard:** https://profoncode-debug.github.io/Bigpot-Publication/admin.html
@@ -45,7 +45,7 @@ Because the Sheet is the database, the owner can also open it directly in Google
 
 ### Website (`index.html`)
 - Animated hero with a train and a cover carousel that turns one book at a time.
-- Catalogue with search, category filters and *View all*. Each book has a multi-page preview that you can swipe on a phone.
+- Catalogue with search, category filters and *View all*. Each book has a multi-page preview that you can swipe on a phone, and a full-screen **zoom** (pinch, scroll wheel, double-tap, drag to move) for reading the pages.
 - An order list that is remembered on the device, then sent as one WhatsApp message.
 - UPI payment with a QR code, a copy-UPI-ID button and a pay-in-app link on phones.
 - An enquiry form for bulk orders that also sends to WhatsApp.

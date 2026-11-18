@@ -620,6 +620,158 @@
     });
   }
 
+  /* =================================================== page zoom */
+  // Full-screen reader for one page: pinch / wheel / double-tap to zoom,
+  // drag to move, swipe (when not zoomed) or arrows to turn pages.
+  const zoom = $("#zoom");
+  const zImg = $("#zoomImg"), zCanvas = $("#zoomCanvas");
+  const Z = { s: 1, x: 0, y: 0, w: 0, h: 0, max: 5, open: false };
+  const pointers = new Map();
+  let pinch = null, drag = null, lastTap = 0, swipeX = null, hintTimer;
+
+  function zFit() {
+    const vw = zCanvas.clientWidth, vh = zCanvas.clientHeight;
+    const nw = zImg.naturalWidth || 1000, nh = zImg.naturalHeight || 1400;
+    const k = Math.min(vw / nw, vh / nh);
+    Z.w = nw * k; Z.h = nh * k;
+    // let the reader zoom until the page is ~3× its real pixel size
+    Z.max = Math.max(3, Math.min(8, (nw / Z.w) * 3));
+    zImg.style.width = Z.w + "px"; zImg.style.height = Z.h + "px";
+    Z.s = 1; Z.x = (vw - Z.w) / 2; Z.y = (vh - Z.h) / 2;
+    zApply(true);
+  }
+  function zClamp() {
+    const vw = zCanvas.clientWidth, vh = zCanvas.clientHeight;
+    const w = Z.w * Z.s, h = Z.h * Z.s;
+    Z.x = w <= vw ? (vw - w) / 2 : Math.min(0, Math.max(vw - w, Z.x));
+    Z.y = h <= vh ? (vh - h) / 2 : Math.min(0, Math.max(vh - h, Z.y));
+  }
+  function zApply(animate) {
+    zClamp();
+    zImg.style.transition = animate ? "transform .28s cubic-bezier(.16,1,.3,1)" : "none";
+    zImg.style.transform = `translate(${Z.x}px, ${Z.y}px) scale(${Z.s})`;
+    $("#zoomLevel").textContent = Math.round(Z.s * 100) + "%";
+    zoom.classList.toggle("is-zoomed", Z.s > 1.01);
+    $("#zoomOut").disabled = Z.s <= 1.01;
+    $("#zoomIn").disabled = Z.s >= Z.max - 0.01;
+  }
+  function zoomTo(ns, cx, cy, animate) {
+    ns = Math.min(Z.max, Math.max(1, ns));
+    const r = zCanvas.getBoundingClientRect();
+    if (cx == null) { cx = r.width / 2; cy = r.height / 2; } else { cx -= r.left; cy -= r.top; }
+    Z.x = cx - (cx - Z.x) * (ns / Z.s);
+    Z.y = cy - (cy - Z.y) * (ns / Z.s);
+    Z.s = ns;
+    zApply(animate);
+  }
+
+  function zLoad() {
+    if (!activeBook) return;
+    const n = activeBook.images.length;
+    zImg.onload = zFit;
+    zImg.src = toSrc(activeBook.images[activeIndex]);
+    zImg.alt = `${activeBook.title} — page ${activeIndex + 1}`;
+    $("#zoomCount").textContent = `${activeIndex + 1} / ${n}`;
+    $("#zoomPrev").hidden = $("#zoomNext").hidden = n < 2;
+    if (zImg.complete && zImg.naturalWidth) zFit();
+  }
+  function zPage(d) { if (!activeBook) return; showPage(activeIndex + d); zLoad(); }
+
+  function openZoom() {
+    if (!zoom || !activeBook) return;
+    Z.open = true;
+    zoom.classList.add("is-open");
+    zoom.setAttribute("aria-hidden", "false");
+    zLoad();
+    const hint = $("#zoomHint");
+    hint.classList.add("is-on");
+    clearTimeout(hintTimer);
+    hintTimer = setTimeout(() => hint.classList.remove("is-on"), 2600);
+    setTimeout(() => $("#zoomClose").focus({ preventScroll: true }), 50);
+  }
+  function closeZoom() {
+    Z.open = false;
+    zoom.classList.remove("is-open");
+    zoom.setAttribute("aria-hidden", "true");
+    pointers.clear(); pinch = drag = null;
+    const b = $("#lbZoom"); if (b) b.focus({ preventScroll: true });
+  }
+
+  if (zoom) {
+    lbImg.addEventListener("click", openZoom);
+    $("#lbZoom").addEventListener("click", openZoom);
+    $("#zoomClose").addEventListener("click", closeZoom);
+    $("#zoomPrev").addEventListener("click", () => zPage(-1));
+    $("#zoomNext").addEventListener("click", () => zPage(1));
+    $("#zoomIn").addEventListener("click", () => zoomTo(Z.s * 1.6, null, null, true));
+    $("#zoomOut").addEventListener("click", () => zoomTo(Z.s / 1.6, null, null, true));
+    $("#zoomFit").addEventListener("click", () => zoomTo(1, null, null, true));
+    addEventListener("resize", () => { if (Z.open) zFit(); });
+
+    zCanvas.addEventListener("wheel", (e) => {
+      e.preventDefault();
+      zoomTo(Z.s * Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0022)), e.clientX, e.clientY, false);
+    }, { passive: false });
+
+    zCanvas.addEventListener("pointerdown", (e) => {
+      zCanvas.setPointerCapture(e.pointerId);
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pointers.size === 2) {
+        const [a, b] = [...pointers.values()];
+        pinch = { d: Math.hypot(a.x - b.x, a.y - b.y), s: Z.s };
+        drag = null; swipeX = null;
+      } else if (pointers.size === 1) {
+        drag = { x: e.clientX, y: e.clientY, ox: Z.x, oy: Z.y, moved: false };
+        swipeX = Z.s <= 1.01 ? e.clientX : null;
+      }
+    });
+    zCanvas.addEventListener("pointermove", (e) => {
+      if (!pointers.has(e.pointerId)) return;
+      pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pinch && pointers.size >= 2) {
+        const [a, b] = [...pointers.values()];
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        zoomTo(pinch.s * (d / pinch.d), (a.x + b.x) / 2, (a.y + b.y) / 2, false);
+      } else if (drag) {
+        const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+        if (Math.abs(dx) + Math.abs(dy) > 6) drag.moved = true;
+        if (Z.s > 1.01) { Z.x = drag.ox + dx; Z.y = drag.oy + dy; zApply(false); }
+      }
+    });
+    const end = (e) => {
+      if (!pointers.has(e.pointerId)) return;
+      pointers.delete(e.pointerId);
+      if (pointers.size < 2) pinch = null;
+      if (drag && pointers.size === 0) {
+        const dx = e.clientX - drag.x;
+        if (swipeX != null && Math.abs(dx) > 60 && Z.s <= 1.01) zPage(dx < 0 ? 1 : -1);
+        else if (!drag.moved) {
+          const now = Date.now();
+          if (now - lastTap < 300) { zoomTo(Z.s > 1.01 ? 1 : 2.5, e.clientX, e.clientY, true); lastTap = 0; }
+          else lastTap = now;
+        }
+        drag = null; swipeX = null;
+      }
+    };
+    zCanvas.addEventListener("pointerup", end);
+    zCanvas.addEventListener("pointercancel", end);
+
+    // keys while zoomed (runs before the preview's own handler)
+    document.addEventListener("keydown", (e) => {
+      if (!Z.open) return;
+      const k = e.key;
+      if (k === "Escape") closeZoom();
+      else if (k === "+" || k === "=") zoomTo(Z.s * 1.4, null, null, true);
+      else if (k === "-" || k === "_") zoomTo(Z.s / 1.4, null, null, true);
+      else if (k === "0") zoomTo(1, null, null, true);
+      else if (k === "ArrowLeft") zPage(-1);
+      else if (k === "ArrowRight") zPage(1);
+      else return;
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }, true);
+  }
+
   document.addEventListener("keydown", (e) => {
     if (lb && lb.classList.contains("is-open")) {
       if (e.key === "Escape") closeLightbox();
